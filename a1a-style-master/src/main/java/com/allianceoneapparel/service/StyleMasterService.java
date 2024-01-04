@@ -3,12 +3,14 @@ package com.allianceoneapparel.service;
 import com.allianceoneapparel.HeaderTableHelper;
 import com.allianceoneapparel.core.common.ResponseAPI;
 import com.allianceoneapparel.entity.Columns;
+import com.allianceoneapparel.entity.SearchBodyOverView;
 import com.allianceoneapparel.entity.StyleMaster;
 import com.allianceoneapparel.entity.StyleMasterDetail;
 import com.allianceoneapparel.model.Contents;
 import com.allianceoneapparel.model.TableResponse;
 import com.allianceoneapparel.model.TableResponseNon;
 import com.allianceoneapparel.repository.ColumnRepository;
+import com.allianceoneapparel.repository.SearchBodyOverViewRepository;
 import com.allianceoneapparel.repository.StyleMasterDetailRepository;
 import com.allianceoneapparel.repository.StyleMasterRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +24,9 @@ public class StyleMasterService {
     private final StyleMasterRepository styleMasterRepository;
     private final StyleMasterDetailRepository styleMasterDetailRepository;
     private final ColumnRepository columnRepository;
+    private final SearchBodyOverViewRepository searchOverView;
 
-//    @Cacheable(value = "styleMasterByPage", key = "{#pageNumber,#pageSize,#pCustomerCode}")
+    @Cacheable(value = "styleMasterByPage", key = "{#pageNumber,#pageSize,#pCustomerCode}")
     @Transactional(readOnly = true)
     public ResponseAPI<?> getStyleMasterByPage(Integer pageNumber, Integer pageSize, String pCustomerCode) {
         var content = styleMasterRepository.getOverview(pageNumber, pageSize, pCustomerCode);
@@ -39,7 +42,7 @@ public class StyleMasterService {
         return new ResponseAPI<>(200, null, new TableResponse(headers, contentsList));
     }
 
-//    @Cacheable(value = "styleMasterDetail", key = "{#styleMasterId}")
+    @Cacheable(value = "styleMasterDetail", key = "{#styleMasterId}")
     @Transactional(readOnly = true)
     public ResponseAPI<?> getStyleMasterDetailByStyleMasterId(Integer styleMasterId) {
         var content = styleMasterDetailRepository.getDetailByStyleMasterId(styleMasterId);
@@ -48,12 +51,37 @@ public class StyleMasterService {
         return new ResponseAPI<>(200, null, new TableResponseNon(headers, content));
     }
 
-//    @Cacheable(value = "styleMasterFilter", key = "{#pCustomerCode}")
+    @Cacheable(value = "styleMasterFilter", key = "{#pCustomerCode}")
     @Transactional(readOnly = true)
     public ResponseAPI<?> getFilterList(String pCustomerCode) {
         var content = columnRepository.getFilterList(pCustomerCode);
         HeaderTableHelper<Columns> headerTableHelper = new HeaderTableHelper<>();
         var headers = headerTableHelper.getHeaders(new Columns());
         return new ResponseAPI<>(200, null, new TableResponseNon(headers, content));
+    }
+
+    @Cacheable(value = "styleMasterSearchOverView", key = "{#searchBodyOverView}")
+    @Transactional(readOnly = true)
+    public ResponseAPI<?> searchOverView(SearchBodyOverView searchBodyOverView) {
+        var content = searchOverView.searchOverView(
+                searchBodyOverView.getPStyleMasterCode(),
+                searchBodyOverView.getPSeason(),
+                searchBodyOverView.getPStage(),
+                searchBodyOverView.getPCustomerCode(),
+                searchBodyOverView.getPProductType(),
+                searchBodyOverView.getPFactoryAllocation(),
+                searchBodyOverView.getPMerAccountName(),
+                searchBodyOverView.getPFromDate(),
+                searchBodyOverView.getPToDate(),
+                searchBodyOverView.getPPageIndex(),
+                searchBodyOverView.getPPageSize());
+        HeaderTableHelper<StyleMaster> headerTableHelper = new HeaderTableHelper<>();
+        var headers = headerTableHelper.getHeaders(new StyleMaster());
+        Contents contentList = new Contents(searchBodyOverView.getPPageIndex(),
+                searchBodyOverView.getPPageSize(),
+                content.getFirst().getTotalRowNum(),
+                content.getFirst().getTotalRowNum() / searchBodyOverView.getPPageSize(),
+                content);
+        return new ResponseAPI<>(200, null, new TableResponse(headers, contentList));
     }
 }
