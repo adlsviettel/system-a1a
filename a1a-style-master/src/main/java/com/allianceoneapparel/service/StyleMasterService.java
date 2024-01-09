@@ -1,19 +1,17 @@
 package com.allianceoneapparel.service;
 
-import com.allianceoneapparel.HeaderTableHelper;
+import com.allianceoneapparel.Helper.HeaderTableHelper;
+import com.allianceoneapparel.Helper.StatusHelper;
+import com.allianceoneapparel.Helper.XmlCreateHelper;
 import com.allianceoneapparel.core.common.ResponseAPI;
-import com.allianceoneapparel.entity.Columns;
-import com.allianceoneapparel.entity.SearchBodyOverView;
-import com.allianceoneapparel.entity.StyleMaster;
-import com.allianceoneapparel.entity.StyleMasterDetail;
+import com.allianceoneapparel.entity.*;
 import com.allianceoneapparel.model.Contents;
 import com.allianceoneapparel.model.TableResponse;
 import com.allianceoneapparel.model.TableResponseNon;
-import com.allianceoneapparel.repository.ColumnRepository;
-import com.allianceoneapparel.repository.SearchBodyOverViewRepository;
-import com.allianceoneapparel.repository.StyleMasterDetailRepository;
-import com.allianceoneapparel.repository.StyleMasterRepository;
+import com.allianceoneapparel.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +23,9 @@ public class StyleMasterService {
     private final StyleMasterDetailRepository styleMasterDetailRepository;
     private final ColumnRepository columnRepository;
     private final SearchBodyOverViewRepository searchOverView;
+    private final StyleMasterInsertRepository styleMasterInsert;
+
+    private static final Logger logger = LoggerFactory.getLogger(StyleMaster.class);
 
     @Cacheable(value = "styleMasterByPage", key = "{#pageNumber,#pageSize,#pCustomerCode}")
     @Transactional(readOnly = true)
@@ -83,5 +84,16 @@ public class StyleMasterService {
                 content.getFirst().getTotalRowNum() / searchBodyOverView.getPPageSize(),
                 content);
         return new ResponseAPI<>(200, null, new TableResponse(headers, contentList));
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseAPI<?> configData(StyleMasterInsert pJSonStyleMaster,
+                                     Integer pAction,
+                                     Integer pCreatedBy,
+                                     Integer pOutput) {
+        XmlCreateHelper<StyleMasterInsert> xmlCreateHelper = new XmlCreateHelper<>();
+        var status = styleMasterInsert.configData(xmlCreateHelper.xmlCreate(pJSonStyleMaster), pAction, pCreatedBy, pOutput);
+        StatusHelper statusHelper = new StatusHelper();
+        return new ResponseAPI<>(200, statusHelper.responseHelper(status, pAction), null);
     }
 }

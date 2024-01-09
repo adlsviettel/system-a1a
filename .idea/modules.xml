@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/a1a-style-master.iml" filepath="$PROJECT_DIR$/a1a-style-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/a1a-style-master.main.iml" filepath="$PROJECT_DIR$/.idea/modules/a1a-style-master.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/a1a-style-master.test.iml" filepath="$PROJECT_DIR$/.idea/modules/a1a-style-master.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/a1a-stylemaster.main.iml" filepath="$PROJECT_DIR$/.idea/modules/a1a-stylemaster.main.iml" />

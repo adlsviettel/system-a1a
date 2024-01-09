@@ -4,5 +4,6 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/a1a-account" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/a1a-boot" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/a1a-down-time" vcs="Git" />
   </component>
 </project>

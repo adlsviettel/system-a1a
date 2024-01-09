@@ -3,6 +3,7 @@ package com.allianceoneapparel.controller;
 import com.allianceoneapparel.StyleMasterURL;
 import com.allianceoneapparel.core.common.ResponseAPI;
 import com.allianceoneapparel.entity.SearchBodyOverView;
+import com.allianceoneapparel.entity.StyleMasterInsert;
 import com.allianceoneapparel.service.StyleMasterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +35,13 @@ public class StyleMasterController {
     @GetMapping(StyleMasterURL.STYLE_MASTER_SEARCH_OVERVIEW)
     public ResponseAPI<?> searchOverView(SearchBodyOverView searchBodyOverView) {
         return styleMasterService.searchOverView(searchBodyOverView);
+    }
+
+    @PostMapping("/config-data")
+    public ResponseAPI<?> configData(@RequestBody StyleMasterInsert styleMasterInsert,
+                                     @RequestParam Integer pAction,
+                                     @RequestParam Integer pCreatedBy,
+                                     @RequestParam Integer pOutput) {
+        return styleMasterService.configData(styleMasterInsert, pAction, pCreatedBy, pOutput);
     }
 }
