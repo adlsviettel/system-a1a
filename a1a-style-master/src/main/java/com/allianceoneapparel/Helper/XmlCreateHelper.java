@@ -8,16 +8,10 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.util.Collections;
 
 public class XmlCreateHelper<T> {
-    public String xmlCreate(T object) {
+    public String xmlCreate(T object) throws JsonProcessingException {
         Root root = new Root();
         root.setItems(Collections.singletonList(object));
         ObjectMapper xmlMapper = new XmlMapper();
-        String xml = null;
-        try {
-            xml = xmlMapper.writeValueAsString(root);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        return xml;
+        return xmlMapper.writeValueAsString(root);
     }
 }

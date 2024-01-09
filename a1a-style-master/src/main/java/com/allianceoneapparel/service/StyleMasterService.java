@@ -10,6 +10,7 @@ import com.allianceoneapparel.model.TableResponse;
 import com.allianceoneapparel.model.TableResponseNon;
 import com.allianceoneapparel.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -86,6 +87,7 @@ public class StyleMasterService {
         return new ResponseAPI<>(200, null, new TableResponse(headers, contentList));
     }
 
+    @SneakyThrows
     @Transactional(readOnly = true)
     public ResponseAPI<?> configData(StyleMasterInsert pJSonStyleMaster,
                                      Integer pAction,
