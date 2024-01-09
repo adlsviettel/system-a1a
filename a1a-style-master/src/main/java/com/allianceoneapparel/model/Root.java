@@ -7,15 +7,16 @@ import lombok.*;
 
 import java.util.List;
 
-@Setter
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @JacksonXmlRootElement(localName = "root")
+@Getter
+@Setter
 public class Root {
 
     @JacksonXmlProperty(localName = "row")
     @JacksonXmlElementWrapper(useWrapping = false)
-    private List<?> items;
+//    private List<?> items;
+    private List<List<?>> row;
 }

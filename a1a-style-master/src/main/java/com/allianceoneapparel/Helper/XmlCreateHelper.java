@@ -1,17 +1,29 @@
 package com.allianceoneapparel.Helper;
 
+import com.allianceoneapparel.entity.StyleMasterInsert;
 import com.allianceoneapparel.model.Root;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
+@SuppressWarnings("ALL")
 public class XmlCreateHelper<T> {
-    public String xmlCreate(T object) throws JsonProcessingException {
-        Root root = new Root();
-        root.setItems(Collections.singletonList(object));
+    private static final Logger logger = LoggerFactory.getLogger(StyleMasterInsert.class);
+
+    public String xmlCreate(List<T> object) throws JsonProcessingException {
         ObjectMapper xmlMapper = new XmlMapper();
+        Root root = new Root();
+        List<T> lsRow=new ArrayList<>();
+        for (T t : object) {
+            lsRow.add((T) List.of(t))
+        }
+        root.setRow(Collections.singletonList(lsRow));
         return xmlMapper.writeValueAsString(root);
     }
 }

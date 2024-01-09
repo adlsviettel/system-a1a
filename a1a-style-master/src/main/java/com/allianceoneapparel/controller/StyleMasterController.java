@@ -8,6 +8,8 @@ import com.allianceoneapparel.service.StyleMasterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(StyleMasterURL.STYLE_MASTER)
 @RequiredArgsConstructor
@@ -38,7 +40,7 @@ public class StyleMasterController {
     }
 
     @PostMapping("/config-data")
-    public ResponseAPI<?> configData(@RequestBody StyleMasterInsert styleMasterInsert,
+    public ResponseAPI<?> configData(@RequestBody List<StyleMasterInsert> styleMasterInsert,
                                      @RequestParam Integer pAction,
                                      @RequestParam Integer pCreatedBy,
                                      @RequestParam Integer pOutput) {

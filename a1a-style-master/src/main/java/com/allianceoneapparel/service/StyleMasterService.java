@@ -17,6 +17,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StyleMasterService {
@@ -89,7 +91,7 @@ public class StyleMasterService {
 
     @SneakyThrows
     @Transactional(readOnly = true)
-    public ResponseAPI<?> configData(StyleMasterInsert pJSonStyleMaster,
+    public ResponseAPI<?> configData(List<StyleMasterInsert> pJSonStyleMaster,
                                      Integer pAction,
                                      Integer pCreatedBy,
                                      Integer pOutput) {
@@ -97,5 +99,6 @@ public class StyleMasterService {
         var status = styleMasterInsert.configData(xmlCreateHelper.xmlCreate(pJSonStyleMaster), pAction, pCreatedBy, pOutput);
         StatusHelper statusHelper = new StatusHelper();
         return new ResponseAPI<>(200, statusHelper.responseHelper(status, pAction), null);
+//        return new ResponseAPI<>(200, null, xmlCreateHelper.xmlCreate(pJSonStyleMaster));
     }
 }
