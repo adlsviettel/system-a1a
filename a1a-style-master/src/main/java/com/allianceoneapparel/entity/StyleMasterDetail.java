@@ -31,6 +31,9 @@ public class StyleMasterDetail {
     @Column(name = "CustomerPatternCode")
     private String customerPatternCode;
 
+    @Column(name = "CustomerCode")
+    private String customerCode;
+
     @Column(name = "TACRouteNumber")
     private String tacRouteNumber;
 
